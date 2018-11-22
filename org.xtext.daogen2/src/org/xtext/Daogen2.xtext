@@ -1,0 +1,57 @@
+grammar org.xtext.Daogen2 with org.eclipse.xtext.common.Terminals
+
+generate daogen2 "http://www.xtext.org/Daogen2"
+
+Daogen :
+    (elements+=Type)*;
+ 
+// ou voce declara um DATATYPE ou uma CLASS  
+Type:
+    DataType | Classe ;
+ 
+DataType:
+    'datatype' name=ID ';';
+ 
+ 
+// estrutura CLASSE
+Classe:
+    'class' name=ID ('extends' superType=[Classe])? '{'
+        (features+=Feature)*
+    '}';
+ 
+ 
+ 
+// dentro de uma classe ou voce declara um ATRIBUTO ou um INSERTCODE
+Feature:
+    Atributo | InsertCode ;
+ 
+Atributo:
+    'private' type=[Type] name=ID ';';
+ 
+InsertCode:
+    'insertCode' '(' parametro=Parametro ')' ';';
+   
+   
+// PARAMETROS possiveis
+Parametro:
+    InserirObjeto | BuscarObjeto | ListarObjeto | RemoverObjeto | AtualizarObjeto | DeletarTabela
+;
+   
+InserirObjeto:  {InserirObjeto}
+    'inserir_objeto';
+   
+BuscarObjeto:
+    'buscar_objeto,' atr=[Atributo];
+
+ListarObjeto:	{ListarObjeto}
+	'listar_objeto';
+	
+RemoverObjeto:
+    'remover_objeto,' atr=[Atributo];
+
+AtualizarObjeto:
+    'atualizar_objeto,' atr=[Atributo];
+    
+DeletarTabela: {DeletarTabela}
+    'deletar_tabela';
+    
